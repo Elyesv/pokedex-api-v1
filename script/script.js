@@ -8,15 +8,10 @@ fetch('https://pokeapi.co/api/v2/pokemon/ditto')
         pokeName.innerHTML = pokemon.name
 
         let pokeSprite = document.querySelector('#pokeSprite')
-        pokeSprite.src = pokemon.name
+        pokeSprite.src = sprites.back_default
 
         let pokeID = document.querySelector('#pokeID')
         pokeID.innerHTML = pokemon.id
 
-
-
-        console.log(sprites.back_defaultx)
-        console.log(pokemon.name)
-        console.log(pokemon.id)
     })
 
