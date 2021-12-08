@@ -1,57 +1,57 @@
-//fetch('https://pokeapi.co/api/v2/pokemon/ditto')
-//    .then(resp => resp.json())
-//    .then(function(data){
-//        let pokemon = data;
-//        let sprites = pokemon.sprites
-//
-//        let pokeName = document.querySelector('#pokeName')
-//        pokeName.innerHTML = pokemon.name
-//
-//        let pokeSprite = document.querySelector('#pokeSprite')
-//        pokeSprite.src = sprites.back_default
-//
-//        let pokeID = document.querySelector('#pokeID')
-//        pokeID.innerHTML = pokemon.id
-//
-//    })
+let offset = 0
+let url = `https://pokeapi.co/api/v2/pokemon?limit=50&offset=${offset}`
+const root = document.getElementById('root')
 
-//let result = fetch('https://pokeapi.co/api/v2/pokemon')
-//    .then(resp => resp.json())
-//    .then(function(data){
-//            let pokemon = data.results
-//            pokemon.forEach((el) => {
-//                console.log(el.name)
-//                return fetch(el.url)
-//            })
-//    })
-//    .then(response => response.json())
-//    .catch(err => {
-//            console.error('Request failed', err)
-//    })
-//
-//console.log(result)
-//result.then(r => {
-//        console.log(r)
-//})
+let paging = (choice) =>{
+    if (choice == "prev"){
+        if (offset != 0){
+            offset -= 50
+            url = `https://pokeapi.co/api/v2/pokemon?limit=50&offset=${offset}`
+            root.innerHTML = ''
+            pokeFetch(url)
+        }
+    }
+    else{
+        offset += 50
+        url = `https://pokeapi.co/api/v2/pokemon?limit=50&offset=${offset}`
+        root.innerHTML = ''
+        pokeFetch(url)
+    }
+    console.log(offset)
+}
+
+document.getElementsByClassName('previous')[0].addEventListener('click',  () =>{
+    paging('prev')
+})
+
+document.getElementsByClassName('next')[0].addEventListener('click',  () =>{
+    paging('next')
+})
 
 let pokeCall = () =>{
     pokeList.forEach((el) =>{
         fetch(el.url)
             .then(resp => resp.json())
             .then(function(data){
-                addPokemon(data.name, data.sprites.front_default, data.id)
+                addPokemon(data)
             })
     })
 }
 
-let addPokemon = (name, sprites, id) =>{
-    let newDiv = document.createElement("div")
+let addPokemon = (data) =>{
+
+    pokemonString = `
+            <img class="pokemon-image" src="${data.sprites.front_default}"/>
+            <h2 class="pokemon-title">${data.id}. ${data.name}</h2>
+            <div class="type">
+                <p>${data.types.map((type) => type.type.name).join(' </p> <p> ')}</p>
+            </div>
+    `
+
+
+let newDiv = document.createElement("div")
     newDiv.classList.add('pokemon')
-    let pokeSprites = document.createElement("img")
-    pokeSprites.src = sprites
-    let pokeName = document.createTextNode(name);
-    newDiv.appendChild(pokeName)
-    newDiv.appendChild(pokeSprites)
+    newDiv.innerHTML = pokemonString
 
     let currentDiv = document.getElementById('root');
     currentDiv.appendChild(newDiv)
@@ -66,4 +66,5 @@ let pokeFetch = (url) => {
         })
 }
 
-pokeFetch('https://pokeapi.co/api/v2/pokemon')
+pokeFetch(url)
+
