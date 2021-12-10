@@ -30,6 +30,17 @@
   border-radius: 30px;
 }
 
+.button {
+  display: flex;
+  justify-content: space-between;
+  width: 80%;
+  margin: 0 auto;
+}
+.button > button {
+  width: 200px;
+  height: 75px;
+}
+
 .normal {
   background: linear-gradient(180deg, #a4acaf 50%, #a4acaf 50%);
 }
